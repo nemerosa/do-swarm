@@ -54,8 +54,8 @@ variable "swarm_name" {
 }
 
 variable "swarm_master_count" {
-  description = "Number of master nodes."
-  default = "1"
+  description = "Number of additional master nodes (at least one is created)."
+  default = "0"
 }
 
 variable "swarm_agent_count" {
