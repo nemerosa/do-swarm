@@ -65,6 +65,19 @@ can change it by adding the following command line option:
 -var 'do_region=...'
 ```
 
+The `packer-ubuntu-docker.log` file contains the snapshot ID at the end, for
+example:
+
+```
+1485200429,,ui,say,--> digitalocean: A snapshot was created: 'docker-13' (ID: 22364942) in region 'fra1'
+```
+
+Export it using:
+
+```bash
+export TF_VAR_do_image=[...]
+```
+
 ### SSH to the Docker swarm
 
 Run the `./do-swarm.sh` script to open a SSH session on the Docker Swarm master.
