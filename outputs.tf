@@ -11,3 +11,8 @@ output "swarm_ips" {
 output "swarm_user" {
   value = "${var.do_user}"
 }
+
+# ID of the master Droplet
+output "swarm_primary_droplet_id" {
+  value = "${digitalocean_droplet.docker_swarm_master_initial.id}"
+}
