@@ -8,3 +8,6 @@
 
 # Terraform state
 /terraform.tfstate*
+
+# Packer log
+/*.log
