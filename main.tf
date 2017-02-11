@@ -46,7 +46,7 @@ EOF
 
   provisioner "remote-exec" {
     inline = [
-      "docker swarm init --advertise-addr ${self.ipv4_address}",
+      "docker swarm init --advertise-addr ${self.ipv4_address_private}",
       "docker swarm join-token --quiet worker > ${var.swarm_token_dir}/do-swarm-worker.token",
       "docker swarm join-token --quiet manager > ${var.swarm_token_dir}/do-swarm-manager.token"
     ]
@@ -98,7 +98,7 @@ EOF
 
   provisioner "remote-exec" {
     inline = [
-      "docker swarm join --token $(cat ${var.swarm_token_dir}/do-swarm-manager.token) ${digitalocean_droplet.docker_swarm_master_initial.ipv4_address}:2377"
+      "docker swarm join --token $(cat ${var.swarm_token_dir}/do-swarm-manager.token) ${digitalocean_droplet.docker_swarm_master_initial.ipv4_address_private}:2377"
     ]
   }
 }
@@ -139,7 +139,7 @@ EOF
 
   provisioner "remote-exec" {
     inline = [
-      "docker swarm join --token $(cat ${var.swarm_token_dir}/do-swarm-worker.token) ${digitalocean_droplet.docker_swarm_master_initial.ipv4_address}:2377"
+      "docker swarm join --token $(cat ${var.swarm_token_dir}/do-swarm-worker.token) ${digitalocean_droplet.docker_swarm_master_initial.ipv4_address_private}:2377"
     ]
   }
 }

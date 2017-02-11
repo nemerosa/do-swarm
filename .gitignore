@@ -5,6 +5,7 @@
 
 # Local environment settings
 /env.sh
+*.tfvars
 
 # Terraform state
 /terraform.tfstate*
