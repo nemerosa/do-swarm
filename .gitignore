@@ -12,3 +12,7 @@
 
 # Packer log
 /*.log
+
+# IDE
+/*.iml
+/.idea
