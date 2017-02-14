@@ -16,6 +16,31 @@ resource "digitalocean_ssh_key" "docker_swarm_ssh_key" {
 }
 
 ##################################################################################################################
+# All node tags
+##################################################################################################################
+
+resource "digitalocean_tag" "docker_swarm_tags" {
+  count = "${length(var.swarm_tags)}"
+  name = "${var.swarm_tags[count.index]}"
+}
+
+resource "digitalocean_tag" "docker_swarm_tag_name" {
+  name = "swarm-name:${var.swarm_name}"
+}
+
+resource "digitalocean_tag" "docker_swarm_tag_role_master" {
+  name = "swarm-role:master"
+}
+
+resource "digitalocean_tag" "docker_swarm_tag_role_agent" {
+  name = "swarm-role:agent"
+}
+
+resource "digitalocean_tag" "docker_swarm_tag_master_tag" {
+  name = "swarm-master-tag:${var.swarm_name}-master"
+}
+
+##################################################################################################################
 # Initial master node
 ##################################################################################################################
 
@@ -36,6 +61,13 @@ EOF
 
   ssh_keys = [
     "${digitalocean_ssh_key.docker_swarm_ssh_key.id}"
+  ]
+
+  tags = [
+    "${digitalocean_tag.docker_swarm_tag_name.id}",
+    "${digitalocean_tag.docker_swarm_tag_role_master.id}",
+    "${digitalocean_tag.docker_swarm_tag_master_tag.id}",
+    "${digitalocean_tag.docker_swarm_tags.*.id}",
   ]
 
   connection {
@@ -85,6 +117,13 @@ EOF
   ssh_keys = [
     "${digitalocean_ssh_key.docker_swarm_ssh_key.id}"]
 
+  tags = [
+    "${digitalocean_tag.docker_swarm_tag_name.id}",
+    "${digitalocean_tag.docker_swarm_tag_role_master.id}",
+    "${digitalocean_tag.docker_swarm_tag_master_tag.id}",
+    "${digitalocean_tag.docker_swarm_tags.*.id}",
+  ]
+
   connection {
     user = "${var.do_user}"
     private_key = "${file(var.do_ssh_key_private)}"
@@ -125,6 +164,12 @@ EOF
 
   ssh_keys = [
     "${digitalocean_ssh_key.docker_swarm_ssh_key.id}"]
+
+  tags = [
+    "${digitalocean_tag.docker_swarm_tag_name.id}",
+    "${digitalocean_tag.docker_swarm_tag_role_agent.id}",
+    "${digitalocean_tag.docker_swarm_tags.*.id}",
+  ]
 
   connection {
     user = "${var.do_user}"
