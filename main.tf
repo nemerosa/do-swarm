@@ -92,6 +92,12 @@ EOF
     command = "scp -o StrictHostKeyChecking=no -o NoHostAuthenticationForLocalhost=yes -o UserKnownHostsFile=/dev/null -i ${var.do_ssh_key_private} ${var.do_user}@${self.ipv4_address}:${var.swarm_token_dir}/do-swarm-manager.token ."
   }
 
+  provisioner "remote-exec" {
+    inline = [
+      "curl -sSL https://dl.bintray.com/emccode/rexray/install | sh -s -- stable"
+    ]
+  }
+
 }
 
 ##################################################################################################################
@@ -140,6 +146,12 @@ EOF
       "docker swarm join --token $(cat ${var.swarm_token_dir}/do-swarm-manager.token) ${digitalocean_droplet.docker_swarm_master_initial.ipv4_address_private}:2377"
     ]
   }
+
+  provisioner "remote-exec" {
+    inline = [
+      "curl -sSL https://dl.bintray.com/emccode/rexray/install | sh -s -- stable"
+    ]
+  }
 }
 
 ##################################################################################################################
@@ -185,6 +197,12 @@ EOF
   provisioner "remote-exec" {
     inline = [
       "docker swarm join --token $(cat ${var.swarm_token_dir}/do-swarm-worker.token) ${digitalocean_droplet.docker_swarm_master_initial.ipv4_address_private}:2377"
+    ]
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "curl -sSL https://dl.bintray.com/emccode/rexray/install | sh -s -- stable"
     ]
   }
 }
