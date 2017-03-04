@@ -173,7 +173,37 @@ EOF
     ]
   }
 
-  # FIXME Installing the RexRay app
+  # Installing the RexRay app
+  provisioner "remote-exec" {
+    inline = [
+      "curl -sSL https://dl.bintray.com/emccode/rexray/install | sh"
+    ]
+  }
+
+  # Configuring RexRay for Digital Ocean
+  provisioner "file" {
+    content = <<EOF
+libstorage:
+  service: dobs
+  integration:
+    volume:
+      operations:
+        create:
+          default:
+            size: 20
+dobs:
+  token: ${var.do_token}
+  region: ${var.do_region}
+EOF
+    destination = "/etc/rexray/config.yml"
+  }
+
+  # Restarting RexRay
+  provisioner "remote-exec" {
+    inline = [
+      "systemctl restart rexray"
+    ]
+  }
 }
 
 ##################################################################################################################
@@ -222,5 +252,35 @@ EOF
     ]
   }
 
-  # FIXME Installing the RexRay app
+  # Installing the RexRay app
+  provisioner "remote-exec" {
+    inline = [
+      "curl -sSL https://dl.bintray.com/emccode/rexray/install | sh"
+    ]
+  }
+
+  # Configuring RexRay for Digital Ocean
+  provisioner "file" {
+    content = <<EOF
+libstorage:
+  service: dobs
+  integration:
+    volume:
+      operations:
+        create:
+          default:
+            size: 20
+dobs:
+  token: ${var.do_token}
+  region: ${var.do_region}
+EOF
+    destination = "/etc/rexray/config.yml"
+  }
+
+  # Restarting RexRay
+  provisioner "remote-exec" {
+    inline = [
+      "systemctl restart rexray"
+    ]
+  }
 }
