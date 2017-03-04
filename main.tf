@@ -92,9 +92,35 @@ EOF
     command = "scp -o StrictHostKeyChecking=no -o NoHostAuthenticationForLocalhost=yes -o UserKnownHostsFile=/dev/null -i ${var.do_ssh_key_private} ${var.do_user}@${self.ipv4_address}:${var.swarm_token_dir}/do-swarm-manager.token ."
   }
 
+  # Installing the RexRay app
   provisioner "remote-exec" {
     inline = [
-      "curl -sSL https://dl.bintray.com/emccode/rexray/install | sh -s -- stable"
+      "curl -sSL https://dl.bintray.com/emccode/rexray/install | sh"
+    ]
+  }
+
+  # Configuring RexRay for Digital Ocean
+  provisioner "file" {
+    content = <<EOF
+libstorage:
+  service: dobs
+  integration:
+    volume:
+      operations:
+        create:
+          default:
+            size: 20
+dobs:
+  token: ${var.do_token}
+  region: ${var.do_region}
+EOF
+    destination = "/etc/rexray/config.yml"
+  }
+
+  # Restarting RexRay
+  provisioner "remote-exec" {
+    inline = [
+      "systemctl restart rexray"
     ]
   }
 
@@ -147,11 +173,7 @@ EOF
     ]
   }
 
-  provisioner "remote-exec" {
-    inline = [
-      "curl -sSL https://dl.bintray.com/emccode/rexray/install | sh -s -- stable"
-    ]
-  }
+  # FIXME Installing the RexRay app
 }
 
 ##################################################################################################################
@@ -200,9 +222,5 @@ EOF
     ]
   }
 
-  provisioner "remote-exec" {
-    inline = [
-      "curl -sSL https://dl.bintray.com/emccode/rexray/install | sh -s -- stable"
-    ]
-  }
+  # FIXME Installing the RexRay app
 }
