@@ -9,6 +9,7 @@
 
 # Terraform state
 /terraform.tfstate*
+/.terraform
 
 # Packer log
 /*.log

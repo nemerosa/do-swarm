@@ -12,11 +12,8 @@ variable "do_region" {
 }
 
 variable "do_image" {
-  # Change to actual image slug when Docker 1.13 available
-  description = "Snapshot ID"
-  # Extracted from the `packer-ubuntu-docker.log` file (last line)
-  # Specify using -var do_image=[...]
-  default = ""
+  description = "Image slug"
+  default = "docker-16-04"
 }
 
 variable "do_agent_size" {
